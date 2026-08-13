@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl, normalizeRecords } from '../api';
+import { normalizeRecords } from '../api';
+
+const workoutsEndpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : 'http://localhost:8000/api/workouts/';
 
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -10,7 +14,7 @@ export default function Workouts() {
 
     async function loadWorkouts() {
       try {
-        const response = await fetch(buildApiUrl('workouts'), { signal: controller.signal });
+        const response = await fetch(workoutsEndpoint, { signal: controller.signal });
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }
